@@ -23,7 +23,7 @@ Requirements
 Installation
 ------------
 
-1. Download the ZIP file and save to a location accessible by XBMC.
+1. Download the ZIP file (https://github.com/downloads/patrickgalbraith/plugin.video.gomtvnetmobile/plugin.video.gomtvnetmobile-1.0.0.zip) and save to a location accessible by XBMC.
 2. Open XBMC and browse to System > Add-ons > Install from zip file.
 3. Browse to the file you downloaded and select it.
 
