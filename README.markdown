@@ -15,7 +15,7 @@ Known Limitations
 Requirements
 ------------
 
-*   XBMC (tested with 10.1 “Dharma” for Windows and Linux)
+*   XBMC (tested with 10.1 "Dharma" for Windows and Linux)
 *   GomTv.Net Login and Premium Season Ticket to watch more than the first game of each match.
 *   Internet Connection ;)
 
