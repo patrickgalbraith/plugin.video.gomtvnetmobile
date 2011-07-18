@@ -11,21 +11,6 @@ import simplejson as json
 import xbmc, xbmcgui, xbmcplugin
 import cookielib
 
-REMOTE_DBG = False 
-
-# append pydev remote debugger
-if REMOTE_DBG:
-    # Make pydev debugger works for auto reload.
-    # Note pydevd module need to be copied in XBMC\system\python\Lib\pysrc
-    try:
-        #import pysrc.pydevd as pydevd
-        import pydevd
-        # stdoutToServer and stderrToServer redirect stdout and stderr to eclipse console
-        pydevd.settrace('localhost', stdoutToServer=True, stderrToServer=True)
-    except ImportError:
-        sys.stderr.write("Error: You must add org.python.pydev.debug.pysrc to your PYTHONPATH.")
-        sys.exit(1)
-
 BASE_COOKIE_PATH = os.path.join(xbmc.translatePath( "special://profile/" ), "addon_data", os.path.basename(os.getcwd()), 'cookie.txt')
 
 # plugin modes
@@ -47,12 +32,9 @@ if not os.path.exists(os.path.dirname(BASE_COOKIE_PATH)):
     os.makedirs(os.path.dirname(BASE_COOKIE_PATH))
 if (os.path.isfile(BASE_COOKIE_PATH)):
     cookie_jar.load(BASE_COOKIE_PATH)
-#if ( os.path.isfile( BASE_COOKIE_PATH ) ):
- #   cookie_jar.load( self.BASE_COOKIE_PATH )
-# create the opener object
+
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie_jar))
 
-#opener = urllib2.build_opener(urllib2.HTTPCookieProcessor())
 opener.addheaders = [('User-agent',  USER_AGENT)]
 urllib2.install_opener(opener)
 
@@ -171,22 +153,6 @@ def show_match_vod_links(url, name):
             notify('small', 'Could not detect every stream', 'Make sure you are logged in and have a premium ticket for this season')
             break
         
-        print repr(game_info)
-        
-        #print mp4_url
-        
-        #cookie_str = ""
-        #count = 1
-        
-        #print repr(cookie_jar)
-        
-        #Parse cookie
-        #for index, cookie in enumerate(cookie_jar):
-            #cookie_str += cookie.name + "=" + cookie.value + "; "
-            
-        #append cookie (turns out its not necessary
-        #mp4_url = mp4_url+"|Cookie="+urllib.quote(cookie_str)+'&User-agent='+urllib.quote(USER_AGENT)+'&Referer='+urllib.quote('http://m.gomtv.net/')     
-        
         mp4_url = mp4_url+'|User-agent='+urllib.quote(USER_AGENT)+'&Referer='+urllib.quote('http://m.gomtv.net/')  
         mp4_url = mp4_url.replace(' ', '%20')
         
@@ -196,7 +162,6 @@ def show_match_vod_links(url, name):
         
         item_num = item_num + 1
     
-    #xbmc.Player(xbmc.PLAYER_CORE_MPLAYER)
     xbmcplugin.endOfDirectory(handle=handle, succeeded=True)
         
 
@@ -213,7 +178,6 @@ def load_mp4_url (game_info, league_id):
     f = opener.open( gox_url )
     data = f.read()
     f.close()
-    #cookie_jar.save()
     
     error_code = re.compile('<errCode>(.+?)</errCode>').findall(data)[0]
     
