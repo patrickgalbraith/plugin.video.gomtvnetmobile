@@ -18,6 +18,7 @@ MODE_MATCHLIST = 1
 MODE_VODLINKS = 2
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0'
+REFERER = 'http://m.gomtv.net/'
 
 #Prevent page load from potentially running infinitely
 MAX_PAGE_LOADS = 20
@@ -36,6 +37,7 @@ if (os.path.isfile(BASE_COOKIE_PATH)):
 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie_jar))
 
 opener.addheaders = [('User-agent',  USER_AGENT)]
+opener.addheaders = [('Referer',  REFERER)]
 urllib2.install_opener(opener)
 
 
@@ -69,8 +71,12 @@ def show_leagues():
 ##########################
 #http://m.gomtv.net/ajax/getVideoList.gom?league=22824&pid=&mid=&page=1
 #Above AJAX returns 10 items per page, need to make multiple request to show more items
-#Works with both GET or POST
+#Only works with POST
 def show_matches(base_url, load_all = False):
+    #url = 'http://m.gomtv.net/ajax/getVideoList.gom'
+    
+    #match_params = parameters_string_to_dict("?"+base_url.split('?')[1])
+    
     pages_loaded = 0
     empty_page = False #have we hit an empty response
     updateListing = True
@@ -81,9 +87,15 @@ def show_matches(base_url, load_all = False):
     while pages_loaded < MAX_PAGE_LOADS:
         url = base_url+str(pages_loaded+1)
         
-        print "Opening: "+url
+        #post_query = {'league':match_params['league'],
+         #             'mid':'',
+         #             'pid':'',
+         #             'page':str(pages_loaded+1)}
         
-        f = opener.open( url )
+        print "Opening: "+base_url.split('?')[0]+"?"+base_url.split('?')[1]
+        #print repr(post_query)
+        
+        f = opener.open( base_url.split('?')[0], base_url.split('?')[1] )
         html = f.read()
         f.close()
         cookie_jar.save()
@@ -104,7 +116,7 @@ def show_matches(base_url, load_all = False):
             match      = i('dd', {'class':'playmatch'})[0](text=True)[0]
             players    = i('dd')[len(i('dd'))-1](text=True) #gets last dd the class of the player container is inconsistent
             title = match+" - "+players[0]+" vs "+players[1]
-            addDirectoryItem(title, True, {'mode':'2', 'name':title, 'url':vod_url}, MAX_PAGE_LOADS*10)
+            addDirectoryItem(title, True, {'mode':'2', 'name':title, 'url':vod_url}, MAX_PAGE_LOADS*10, thumb_href)
         
         pages_loaded = pages_loaded + 1
         
@@ -153,7 +165,7 @@ def show_match_vod_links(url, name):
             notify('small', 'Could not detect every stream', 'Make sure you are logged in and have a premium ticket for this season')
             break
         
-        mp4_url = mp4_url+'|User-agent='+urllib.quote(USER_AGENT)+'&Referer='+urllib.quote('http://m.gomtv.net/')  
+        mp4_url = mp4_url+'|User-agent='+urllib.quote(USER_AGENT)+'&Referer='+urllib.quote(REFERER)  
         mp4_url = mp4_url.replace(' ', '%20')
         
         print mp4_url
@@ -226,9 +238,12 @@ def parameters_string_to_dict(parameters):
                 paramDict[paramSplits[0]] = paramSplits[1]
     return paramDict
  
-def addDirectoryItem(name, isFolder=True, parameters={}, totalItems=1):
+def addDirectoryItem(name, isFolder=True, parameters={}, totalItems=1, thumbnailImage=""):
     ''' Add a list item to the XBMC UI.'''
-    li = xbmcgui.ListItem(name)
+    if thumbnailImage == "":
+        li = xbmcgui.ListItem(name)
+    else:
+        li = xbmcgui.ListItem(name, thumbnailImage=thumbnailImage)
     dir_url = sys.argv[0] + '?' + urllib.urlencode(parameters)
     return xbmcplugin.addDirectoryItem(handle=handle, url=dir_url, listitem=li, isFolder=isFolder, totalItems=totalItems)
 
