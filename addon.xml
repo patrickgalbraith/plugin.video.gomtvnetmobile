@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="plugin.video.gomtvnetmobile"
+       name="GomTV.net"
+       version="1.0.0"
+       provider-name="Futurefive">
+  <requires>
+    <import addon="xbmc.python" version="1.0"/>
+    <import addon="script.module.simplejson" version="2.0.10"/>
+    <import addon="script.module.beautifulsoup" version="3.0.8"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+        <provides>video</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Watch VOD's from GomTV.net.</summary>
+    <description lang="en">Watch archived VOD's from GomTV.net home of the GSL (Global Starcraft II League) and the GSTL (Global Starcraft II Team League)</description>
+	<disclaimer>Please note: This plugin does not provide access to live streams. Access to VOD's for games two and above requires login details and purchase of a premium pass online at GomTV.net.</disclaimer>
+  </extension>
+</addon>
