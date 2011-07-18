@@ -15,7 +15,6 @@ REMOTE_DBG = False
 
 # append pydev remote debugger
 if REMOTE_DBG:
-    sys.path.append(r'C:\Users\Patrick\AppData\Roaming\XBMC\system\python\Lib\pysrc')
     # Make pydev debugger works for auto reload.
     # Note pydevd module need to be copied in XBMC\system\python\Lib\pysrc
     try:
