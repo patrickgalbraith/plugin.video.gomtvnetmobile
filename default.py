@@ -83,20 +83,14 @@ def show_matches(base_url, load_all = False):
     
     if load_all == False:
         updateListing = False
-		totalItems = perpage + 1
-	else:
-		totalItems = MAX_PAGE_LOADS*10
+        totalItems = perpage + 1
+    else:
+        totalItems = MAX_PAGE_LOADS*10
         
     while pages_loaded < MAX_PAGE_LOADS:
         url = base_url+str(pages_loaded+1)
         
-        #post_query = {'league':match_params['league'],
-         #             'mid':'',
-         #             'pid':'',
-         #             'page':str(pages_loaded+1)}
-        
         print "Opening: "+url.split('?')[0]+"?"+url.split('?')[1]
-        #print repr(post_query)
         
         f = opener.open( url.split('?')[0], url.split('?')[1] )
         html = f.read()
