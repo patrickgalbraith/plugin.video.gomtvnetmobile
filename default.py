@@ -17,7 +17,7 @@ BASE_COOKIE_PATH = os.path.join(xbmc.translatePath( "special://profile/" ), "add
 MODE_MATCHLIST = 1
 MODE_VODLINKS = 2
 
-USER_AGENT = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0'
+USER_AGENT = 'Mozilla/5.0(iPad; U; CPU OS 4_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8F191 Safari/6533.18.5'
 REFERER = 'http://m.gomtv.net/'
 
 #Prevent page load from potentially running infinitely
