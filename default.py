@@ -83,6 +83,9 @@ def show_matches(base_url, load_all = False):
     
     if load_all == False:
         updateListing = False
+		totalItems = perpage + 1
+	else:
+		totalItems = MAX_PAGE_LOADS*10
         
     while pages_loaded < MAX_PAGE_LOADS:
         url = base_url+str(pages_loaded+1)
@@ -92,10 +95,10 @@ def show_matches(base_url, load_all = False):
          #             'pid':'',
          #             'page':str(pages_loaded+1)}
         
-        print "Opening: "+base_url.split('?')[0]+"?"+base_url.split('?')[1]
+        print "Opening: "+url.split('?')[0]+"?"+url.split('?')[1]
         #print repr(post_query)
         
-        f = opener.open( base_url.split('?')[0], base_url.split('?')[1] )
+        f = opener.open( url.split('?')[0], url.split('?')[1] )
         html = f.read()
         f.close()
         cookie_jar.save()
@@ -116,7 +119,7 @@ def show_matches(base_url, load_all = False):
             match      = i('dd', {'class':'playmatch'})[0](text=True)[0]
             players    = i('dd')[len(i('dd'))-1](text=True) #gets last dd the class of the player container is inconsistent
             title = match+" - "+players[0]+" vs "+players[1]
-            addDirectoryItem(title, True, {'mode':'2', 'name':title, 'url':vod_url}, MAX_PAGE_LOADS*10, thumb_href)
+            addDirectoryItem(title, True, {'mode':'2', 'name':title, 'url':vod_url}, totalItems, thumb_href)
         
         pages_loaded = pages_loaded + 1
         
